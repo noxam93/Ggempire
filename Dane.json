@@ -1,0 +1,11 @@
+{
+  "allianceName": "Reborn",
+  "server": "PL1",
+  "players": [
+    { "name": "GraczPierwszy", "might": "185,420,100", "honor": "3,450" },
+    { "name": "AlexGGE", "might": "142,100,500", "honor": "2,890" },
+    { "name": "KsiążęNocy", "might": "98,300,120", "honor": "1,920" },
+    { "name": "ShadowPL", "might": "75,000,000", "honor": "1,450" },
+    { "name": "Valkiria", "might": "64,890,300", "honor": "1,100" }
+  ]
+}
