@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>GGE Tracker - Sojuszu</title>
+    <title>GGE Tracker - Reborn</title>
     <style>
         body { font-family: Arial, sans-serif; background: #121212; color: #e0e0e0; padding: 20px; }
         table { width: 100%; border-collapse: collapse; background: #1e1e1e; margin-top: 20px; }
@@ -11,15 +11,50 @@
     </style>
 </head>
 <body>
-    <h1>🛡️ Tracker Sojuszu GGE</h1>
-    <p>Ładowanie danych z próbki...</p>
+    <h1>🛡️ Tracker Sojuszu Reborn (PL1)</h1>
+    <p id="status">Pobieranie danych...</p>
     <table>
         <thead>
-            <tr><th>#</th><th>Gracz</th><th>Status</th><th>Moc</th></tr>
+            <tr><th>#</th><th>Gracz</th><th>Moc</th><th>Honor</th></tr>
         </thead>
         <tbody id="data-rows">
-            <tr><td colspan="4">Oczekiwanie na pierwszorazowe pobranie danych...</td></tr>
+            <tr><td colspan="4">Ładowanie tabeli...</td></tr>
         </tbody>
     </table>
+
+    <script>
+        async function loadData() {
+            try {
+                const response = await fetch('dane.json');
+                if (!response.ok) throw new Error("Brak pliku z danymi");
+                const data = await response.json();
+                
+                document.getElementById('status').innerText = `Ostatnia aktualizacja: ${new Date().toLocaleTimeString()}`;
+                const tbody = document.getElementById('data-rows');
+                tbody.innerHTML = '';
+
+                // Sprawdzamy strukturę danych graczy z API
+                const players = data.players || data.members || [];
+                if(players.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4">Brak graczy w pliku danych.</td></tr>`;
+                    return;
+                }
+
+                players.forEach((p, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td><b>${p.name || p.playerName || 'Nieznany'}</b></td>
+                        <td>${p.might || p.power || '0'}</td>
+                        <td>${p.honor || '0'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (err) {
+                document.getElementById('status').innerText = "Czekam na pierwsze uruchomienie skryptu zbierającego dane...";
+            }
+        }
+        loadData();
+    </script>
 </body>
 </html>
